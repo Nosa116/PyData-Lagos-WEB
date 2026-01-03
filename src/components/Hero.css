@@ -24,9 +24,9 @@
 
 .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(3rem, 8vw, 6rem);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    line-height: 1;
+    letter-spacing: 0.08em;
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -51,6 +51,24 @@
     justify-content: center;
 }
 
+@keyframes rocketFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-30px);
+    }
+}
+
+@keyframes rocketSpin {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.9;
+    }
+}
+
 .rocket-container {
     position: relative;
     width: 100%;
@@ -59,6 +77,7 @@
     align-items: center;
     justify-content: center;
     transition: transform 0.1s ease-out;
+    animation: rocketFloat 4s ease-in-out infinite;
 }
 
 .launch-image {
@@ -66,6 +85,7 @@
     height: 100%;
     object-fit: contain;
     max-width: 650px;
+    animation: rocketSpin 4s ease-in-out infinite;
 }
 
 /* Responsive */
@@ -80,7 +100,7 @@
     }
 
     .hero-title {
-        font-size: clamp(2.5rem, 10vw, 4.5rem);
+        font-size: clamp(3rem, 11vw, 5rem);
     }
 }
 
@@ -90,7 +110,7 @@
     }
 
     .hero-title {
-        font-size: clamp(2rem, 12vw, 3.5rem);
+        font-size: clamp(2.5rem, 13vw, 4rem);
     }
 
     .hero-illustration {
