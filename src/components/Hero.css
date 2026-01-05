@@ -39,6 +39,7 @@
     display: block;
     opacity: 0;
     color: #000000;
+    white-space: nowrap;
 }
 
 /* Illustration */

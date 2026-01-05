@@ -3,6 +3,38 @@ import './Hero.css'
 
 const Hero = () => {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+    const [text, setText] = useState('')
+    const [isDeleting, setIsDeleting] = useState(false)
+    const [loopNum, setLoopNum] = useState(0)
+    const [typingSpeed, setTypingSpeed] = useState(150)
+
+    const words = ["Data Engineers.", "ML Engineers.", "Data Analysts.", "Everyone."]
+
+    useEffect(() => {
+        const handleTyping = () => {
+            const i = loopNum % words.length
+            const fullText = words[i]
+
+            setText(current => isDeleting 
+                ? fullText.substring(0, current.length - 1) 
+                : fullText.substring(0, current.length + 1)
+            )
+
+            if (!isDeleting && text === fullText) {
+                setIsDeleting(true)
+                setTypingSpeed(1500)
+            } else if (isDeleting && text === '') {
+                setIsDeleting(false)
+                setLoopNum(loopNum + 1)
+                setTypingSpeed(500)
+            } else {
+                setTypingSpeed(isDeleting ? 50 : 150)
+            }
+        }
+
+        const timer = setTimeout(handleTyping, typingSpeed)
+        return () => clearTimeout(timer)
+    }, [text, isDeleting, loopNum, typingSpeed])
 
     useEffect(() => {
         const handleMouseMove = (e) => {
@@ -25,7 +57,7 @@ const Hero = () => {
                             A COMMUNITY
                         </span>
                         <span className="title-line fade-in-up" style={{ animationDelay: '0.3s' }}>
-                            FOR EVERYONE
+                            FOR {text}
                         </span>
                     </h1>
                 </div>
