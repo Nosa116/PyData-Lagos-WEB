@@ -54,10 +54,10 @@ const Hero = () => {
                 <div className="hero-content">
                     <h1 className="hero-title">
                         <span className="title-line fade-in-up" style={{ animationDelay: '0.1s' }}>
-                            A COMMUNITY
+                            A COMMUNITY FOR
                         </span>
                         <span className="title-line fade-in-up" style={{ animationDelay: '0.3s' }}>
-                            FOR {text}
+                            {text}
                         </span>
                     </h1>
                 </div>

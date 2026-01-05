@@ -99,7 +99,7 @@
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
     padding: 0.75rem;
     min-width: 200px;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     animation: dropdownSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(4, 173, 206, 0.1);
@@ -167,11 +167,29 @@
     transition: all var(--transition-base);
     box-shadow: 0 4px 12px rgba(4, 173, 206, 0.3);
     white-space: nowrap;
+    position: relative;
+}
+
+.cta-button::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    border-radius: 50px;
+    z-index: -1;
+    transition: all var(--transition-base);
 }
 
 .cta-button:hover {
-    transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(4, 173, 206, 0.4);
+}
+
+.cta-button:hover::after {
+    top: 6px;
+    left: 6px;
 }
 
 .cta-button:active {
