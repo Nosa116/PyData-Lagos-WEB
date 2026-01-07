@@ -54,7 +54,7 @@
     right: -4rem;
     width: 250px;
     height: 250px;
-    background-color: #FFF67E; /* Bright Yellow */
+    background-color: var(--color-accent);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -63,12 +63,10 @@
     z-index: 0;
 }
 
-.sticker-text {
-    font-size: 2rem;
-    font-weight: 800;
-    color: black;
-    text-align: center;
-    padding: 2rem;
+.sticker-image {
+    width: 60%;
+    height: auto;
+    transform: rotate(15deg);
 }
 
 /* Card Grid */

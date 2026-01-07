@@ -12,7 +12,7 @@ const About = () => {
         <section className="about">
             {/* Sticker Element */}
             <div className="sticker">
-                <span className="sticker-text">Do with</span>
+                <img src="/cube.png" alt="Cube" className="sticker-image" />
             </div>
 
             <div className="about-container">
