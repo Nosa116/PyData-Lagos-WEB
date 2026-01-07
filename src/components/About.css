@@ -20,6 +20,7 @@
 .about-header {
     margin-bottom: 4rem;
     position: relative;
+    text-align: center;
 }
 
 .about-title {
@@ -33,6 +34,7 @@
 
 .about-description {
     max-width: 60%;
+    margin: 0 auto;
     font-size: clamp(1.1rem, 2vw, 1.5rem);
     line-height: 1.5;
     font-weight: 500;
