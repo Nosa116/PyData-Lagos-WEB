@@ -1,40 +1,19 @@
 import { useEffect, useState } from 'react'
 import './Hero.css'
+import SplitText from './SplitText'
 
 const Hero = () => {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-    const [text, setText] = useState('')
-    const [isDeleting, setIsDeleting] = useState(false)
-    const [loopNum, setLoopNum] = useState(0)
-    const [typingSpeed, setTypingSpeed] = useState(70)
+    const [currentIndex, setCurrentIndex] = useState(0)
 
     const words = ["Data Engineers.", "ML Engineers.", "Data Analysts.", "Everyone."]
 
     useEffect(() => {
-        const handleTyping = () => {
-            const i = loopNum % words.length
-            const fullText = words[i]
-
-            setText(current => isDeleting 
-                ? fullText.substring(0, current.length - 1) 
-                : fullText.substring(0, current.length + 1)
-            )
-
-            if (!isDeleting && text === fullText) {
-                setIsDeleting(true)
-                setTypingSpeed(1000)
-            } else if (isDeleting && text === '') {
-                setIsDeleting(false)
-                setLoopNum(loopNum + 1)
-                setTypingSpeed(300)
-            } else {
-                setTypingSpeed(isDeleting ? 30 : 70)
-            }
-        }
-
-        const timer = setTimeout(handleTyping, typingSpeed)
-        return () => clearTimeout(timer)
-    }, [text, isDeleting, loopNum, typingSpeed])
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % words.length)
+        }, 3000)
+        return () => clearInterval(interval)
+    }, [])
 
     useEffect(() => {
         const handleMouseMove = (e) => {
@@ -56,9 +35,16 @@ const Hero = () => {
                         <span className="title-line fade-in-up" style={{ animationDelay: '0.1s' }}>
                             A COMMUNITY FOR
                         </span>
-                        <span className="title-line fade-in-up" style={{ animationDelay: '0.3s' }}>
-                            {text}
-                        </span>
+                        <div className="title-line fade-in-up" style={{ animationDelay: '0.3s' }}>
+                            <SplitText
+                                text={words[currentIndex]}
+                                className="split-text-custom"
+                                delay={50}
+                                duration={1}
+                                splitType="chars,words"
+                                tag="span"
+                            />
+                        </div>
                     </h1>
                 </div>
 
