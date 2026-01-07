@@ -3,6 +3,8 @@
 ## Project Overview
 A React-based website for PyData Lagos built with Vite, featuring premium animations, responsive design, and custom Thunder ExtraBloc typography. The site emphasizes smooth micro-interactions and modern aesthetics using CSS3 animations and React hooks for interactivity.
 
+**PyData Lagos Mission**: Educational program of NumFOCUS (501(c)(3) nonprofit) providing a forum for the international community of data analysis tool users and developers. Focuses on best practices, emerging technologies for data management, processing, analytics, and visualization. PyData Lagos specifically addresses Africa's unique challenges through data science while contributing to the global open-source ecosystem.
+
 ## Architecture & Components
 
 ### Component Structure
@@ -83,10 +85,23 @@ npm run preview  # Preview built site
 - Styling: `.dropdown` container + `.dropdown-item` children with gradient hover and animated indicator dots
 - Trigger: `onMouseEnter`/`onMouseLeave` for desktop (mobile hidden per `@media (max-width: 768px)`)
 
-## Important Details
+## Content & Messaging Guidelines
 
-- **Fixed Navigation**: `position: fixed; z-index: 1000` with scroll-triggered styling changes
-- **No component libraries**: Build UI with vanilla HTML/CSS and React - maintain simplicity and performance
-- **Vite config**: Minimal setup in `vite.config.js` - uses `@vitejs/plugin-react` for JSX
-- **Color accent (cyan #04ADCE)**: Used consistently in buttons, hover states, and dropdown indicators
-- **z-index hierarchy**: Navigation (1000) > Hero content (10); ensure new components respect this
+### PyData Lagos Values
+- **Open-Source Focus**: Emphasize community-driven development and knowledge sharing
+- **African Innovation**: Highlight data science solutions for African challenges
+- **Inclusive Community**: Welcome data enthusiasts, researchers, and professionals across domains
+- **Multi-Language Support**: Recognize Python, Julia, R, and other data science languages
+- **Educational Mission**: Support learning and professional development in data science
+
+### Key Messaging Elements
+- **Community Building**: "A COMMUNITY FOR EVERYONE" (current hero text)
+- **Innovation Focus**: Data science addressing real-world problems
+- **Global Connection**: Part of international PyData network while serving local needs
+- **Professional Growth**: Career development and skill advancement opportunities
+
+### Contact Information
+- **Local Organizer**: Olugbenga Ezekiel (10gbenga.ezekiel@gmail.com)
+- **NumFOCUS Director**: Leah Silen (+1 512-222-5449; leah@numfocus.org)
+- **Meetup**: http://meetup.com/pydata-lagos/
+- **Code of Conduct**: https://pydata.org/code-of-conduct/

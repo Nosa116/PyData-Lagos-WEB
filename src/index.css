@@ -4,7 +4,7 @@
   --color-primary-light: #818cf8;
   --color-primary-dark: #4f46e5;
   --color-secondary: #8b5cf6;
-  --color-accent: #06b6d4;
+  --color-accent: #04ADCE;
   --color-bg: #FCF4EC;
   --color-bg-secondary: #f8fafc;
   --color-text: #1e293b;
@@ -23,6 +23,7 @@
   /* Typography */
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   --font-display: 'ThunderExtBd', sans-serif;
+  --font-navbar: 'Cabinet Grotesk', sans-serif;
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
