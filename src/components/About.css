@@ -2,7 +2,7 @@
     min-height: 100vh;
     padding: 6rem 2rem;
     background-color: #FFF5EA;
-    color: #2D31FA; /* Deep Royal Blue */
+    color: black; /* Deep Royal Blue */
     position: relative;
     overflow: hidden; /* For the sticker clipping */
     font-family: var(--font-navbar);
@@ -66,7 +66,7 @@
 .sticker-text {
     font-size: 2rem;
     font-weight: 800;
-    color: #2D31FA;
+    color: black;
     text-align: center;
     padding: 2rem;
 }
@@ -115,7 +115,7 @@
     border-bottom-right-radius: 2rem;
     font-weight: 700;
     font-size: 1.2rem;
-    color: #2D31FA;
+    color: black;
     z-index: 2;
 }
 
