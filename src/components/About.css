@@ -20,7 +20,7 @@
 .about-header {
     margin-bottom: 4rem;
     position: relative;
-    text-align: center;
+    text-align: left;
 }
 
 .about-title {
@@ -33,8 +33,8 @@
 }
 
 .about-description {
-    max-width: 90%;
-    margin: 0 auto;
+    max-width: 80%;
+    margin: 0;
     font-size: clamp(1rem, 1.8vw, 1.2rem);
     line-height: 1.5;
     font-weight: 500;
@@ -44,7 +44,7 @@
     font-size: clamp(1.2rem, 3vw, 2.2rem);
     line-height: 1.5;
     font-weight: 600;
-    text-align: center;
+    text-align: left;
 }
 
 /* Sticker Element */
