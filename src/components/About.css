@@ -33,15 +33,15 @@
 }
 
 .about-description {
-    max-width: calc(100% - 200px);
+    max-width: calc(100% - 50px);
     margin: 0;
-    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    font-size: clamp(0.85rem, 1.6vw, 1.05rem);
     line-height: 1.5;
     font-weight: 500;
 }
 
 .scroll-reveal-text {
-    font-size: clamp(1.2rem, 3vw, 2.2rem);
+    font-size: clamp(1.05rem, 2.8vw, 2.05rem);
     line-height: 1.5;
     font-weight: 600;
     text-align: left;
@@ -54,7 +54,7 @@
     right: -4rem;
     width: 250px;
     height: 250px;
-    background-color: var(--color-accent);
+    background-color: transparent;
     border-radius: 50%;
     display: flex;
     align-items: center;
