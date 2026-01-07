@@ -37,6 +37,7 @@ const Hero = () => {
                         </span>
                         <div className="title-line fade-in-up" style={{ animationDelay: '0.3s' }}>
                             <SplitText
+                                key={words[currentIndex]}
                                 text={words[currentIndex]}
                                 className="split-text-custom"
                                 delay={50}
