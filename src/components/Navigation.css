@@ -6,13 +6,17 @@
     z-index: 1000;
     padding: 1.5rem 0;
     transition: all var(--transition-base);
-    background: white;
-    border-bottom: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .navigation.scrolled {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     padding: 1rem 0;
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .nav-container {
@@ -95,15 +99,16 @@
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background: white;
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 16px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
     padding: 0.75rem;
     min-width: 200px;
     margin-top: 0.5rem;
     animation: dropdownSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(4, 173, 206, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .dropdown::before {
@@ -114,12 +119,14 @@
     transform: translateX(-50%);
     width: 16px;
     height: 16px;
-    background: white;
+    background: rgba(255, 255, 255, 0.8); /* Match dropdown bg */
     border-radius: 2px;
     rotate: 45deg;
-    border: 1px solid rgba(4, 173, 206, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: none;
     border-left: none;
+    backdrop-filter: blur(12px); /* Match dropdown blur */
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .dropdown-item {
@@ -148,7 +155,7 @@
 }
 
 .dropdown-item:hover {
-    background: linear-gradient(135deg, rgba(4, 173, 206, 0.08) 0%, rgba(4, 173, 206, 0.04) 100%);
+    background: linear-gradient(135deg, rgba(4, 173, 206, 0.1) 0%, rgba(4, 173, 206, 0.05) 100%);
     color: var(--color-accent);
     transform: translateX(6px);
 }
@@ -160,7 +167,7 @@
 .cta-button {
     background: var(--color-accent);
     color: white;
-    border: 1px solid #000000;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 0.875rem 2.5rem;
     border-radius: 50px;
     font-family: var(--font-navbar);
@@ -169,7 +176,7 @@
     cursor: pointer;
     transition: all var(--transition-base);
     white-space: nowrap;
-    box-shadow: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     letter-spacing: 0.02em;
 }
 
