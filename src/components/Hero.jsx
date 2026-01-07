@@ -6,7 +6,7 @@ const Hero = () => {
     const [text, setText] = useState('')
     const [isDeleting, setIsDeleting] = useState(false)
     const [loopNum, setLoopNum] = useState(0)
-    const [typingSpeed, setTypingSpeed] = useState(150)
+    const [typingSpeed, setTypingSpeed] = useState(70)
 
     const words = ["Data Engineers.", "ML Engineers.", "Data Analysts.", "Everyone."]
 
@@ -22,13 +22,13 @@ const Hero = () => {
 
             if (!isDeleting && text === fullText) {
                 setIsDeleting(true)
-                setTypingSpeed(1500)
+                setTypingSpeed(1000)
             } else if (isDeleting && text === '') {
                 setIsDeleting(false)
                 setLoopNum(loopNum + 1)
-                setTypingSpeed(500)
+                setTypingSpeed(300)
             } else {
-                setTypingSpeed(isDeleting ? 50 : 150)
+                setTypingSpeed(isDeleting ? 30 : 70)
             }
         }
 

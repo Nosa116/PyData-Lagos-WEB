@@ -10,7 +10,7 @@ const About = () => {
 
             <div className="about-container">
                 <div className="about-header">
-                    <h2 className="about-title">Our programs</h2>
+                    <h2 className="about-title">About us</h2>
                     <p className="about-description">
                         We are going in lower the four thresholds. By finding and educating new political talent, 
                         by strengthening incumbent politicians in their profession, and by building and sharing 
