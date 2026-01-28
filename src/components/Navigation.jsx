@@ -5,18 +5,25 @@ const Navigation = ({ scrolled }) => {
     const [activeDropdown, setActiveDropdown] = useState(null)
 
     const navItems = [
-        {
-            label: 'Home',
-            hasDropdown: true,
-            items: ['About', 'Events', 'Blog']
-        },
-        {
+                        {
+                            label: 'Home',
+                            hasDropdown: true,
+                            items: [
+                                { label: 'About', href: '#about' },
+                                { label: 'Projects', href: '#projects' },
+                                { label: 'Events', href: '#meetups' },
+                                { label: 'Team', href: '#team' }
+                            ]
+                        },        {
             label: 'Contribute',
             hasDropdown: true,
-            items: ['Speak', 'Sponsor', 'Volunteer']
+            items: [
+                { label: 'Speak', href: '#speak' },
+                { label: 'Program', href: '#contribute' }
+            ]
         },
-        { label: 'About Us' },
-        { label: 'Contact Us' }
+        { label: 'About Us', href: '#about' },
+        { label: 'Contact Us', href: '#contact' }
     ]
 
     return (
@@ -34,7 +41,7 @@ const Navigation = ({ scrolled }) => {
                             onMouseEnter={() => item.hasDropdown && setActiveDropdown(item.label)}
                             onMouseLeave={() => setActiveDropdown(null)}
                         >
-                            <a href="#" className="nav-link">
+                            <a href={item.href || '#'} className="nav-link">
                                 {item.label}
                                 {item.hasDropdown && (
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
@@ -46,8 +53,8 @@ const Navigation = ({ scrolled }) => {
                             {item.hasDropdown && activeDropdown === item.label && (
                                 <div className="dropdown">
                                     {item.items.map((subItem, subIndex) => (
-                                        <a key={subIndex} href="#" className="dropdown-item">
-                                            {subItem}
+                                        <a key={subIndex} href={subItem.href} className="dropdown-item">
+                                            {subItem.label}
                                         </a>
                                     ))}
                                 </div>
@@ -56,9 +63,9 @@ const Navigation = ({ scrolled }) => {
                     ))}
                 </ul>
 
-                <button className="cta-button">
+                <a href="#contact" className="cta-button">
                     Join the Community
-                </button>
+                </a>
             </div>
         </nav>
     )

@@ -32,7 +32,7 @@
 }
 
 .contributor-main-title .highlight {
-    color: var(--color-primary);
+    color: var(--color-orange);
 }
 
 .contributor-tagline {
@@ -78,7 +78,7 @@
     width: 64px;
     height: 64px;
     background-color: white;
-    color: var(--color-primary);
+    color: var(--color-orange);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +89,7 @@
 }
 
 .perk-item:hover .perk-icon-wrapper {
-    background-color: var(--color-primary);
+    background-color: var(--color-orange);
     color: white;
     transform: scale(1.1) rotate(5deg);
 }
@@ -145,7 +145,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    background-color: var(--color-primary);
+    background-color: var(--color-orange);
     color: white;
     padding: 1.25rem 2rem;
     border-radius: 16px;
@@ -157,8 +157,8 @@
 
 .apply-btn:hover {
     transform: translateY(-2px);
-    background-color: #f3a663;
-    box-shadow: 0 15px 30px -10px rgba(234, 145, 67, 0.4);
+    background-color: var(--color-accent);
+    box-shadow: 0 15px 30px -10px rgba(4, 173, 206, 0.4);
 }
 
 .cta-pattern {

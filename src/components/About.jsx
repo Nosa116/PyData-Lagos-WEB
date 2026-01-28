@@ -9,7 +9,7 @@ const About = () => {
     const p3 = "PyData Lagos brings together data enthusiasts, researchers, and professionals across various domains to exchange knowledge, share experiences, and explore innovative techniques. Our community is especially passionate about using data science and analytics to address Africa’s unique challenges, while contributing to the global open-source ecosystem."
 
     return (
-        <section className="about">
+        <section id="about" className="about">
             {/* Sticker Element */}
             <div className="sticker">
                 <img src="/cube.png" alt="Cube" className="sticker-image" />
