@@ -23,7 +23,7 @@ const Community = () => {
     ]
 
     return (
-        <section id="community" className="community-section">
+        <section id="projects" className="community-section">
             <div className="community-container">
                 <div className="community-grid">
                     {/* Left Column: Narrative */}
