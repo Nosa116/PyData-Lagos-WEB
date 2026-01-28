@@ -1,6 +1,6 @@
 .speaking-section {
     padding: 8rem 2rem;
-    background-color: var(--color-bg);
+    background-color: #FFF5EA;
     position: relative;
     overflow: hidden;
 }
@@ -60,15 +60,16 @@
 
 .speaking-main-title {
     font-family: var(--font-display);
-    font-size: clamp(3rem, 6vw, 6rem);
-    line-height: 0.9;
-    color: var(--color-text);
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    line-height: 1;
+    font-weight: 400;
+    color: #303030;
     margin-bottom: 0.5rem;
+    text-transform: uppercase;
 }
 
 .speaking-main-title .highlight {
     color: var(--color-primary);
-    -webkit-text-stroke: 1px var(--color-primary);
 }
 
 .speaking-description {
