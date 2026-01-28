@@ -177,6 +177,7 @@
     transition: all var(--transition-base);
     white-space: nowrap;
     letter-spacing: 0.02em;
+    text-decoration: none;
 }
 
 .cta-button:hover {
