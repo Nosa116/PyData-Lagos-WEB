@@ -3,6 +3,10 @@ import './App.css'
 import Navigation from './components/Navigation'
 import Hero from './components/Hero'
 import About from './components/About'
+import Speaking from './components/Speaking'
+import Contributor from './components/Contributor'
+import Team from './components/Team'
+import Meetups from './components/Meetups'
 import Community from './components/Community'
 import Contact from './components/Contact'
 
@@ -23,6 +27,10 @@ function App() {
             <Navigation scrolled={scrolled} />
             <Hero />
             <About />
+            <Speaking />
+            <Contributor />
+            <Team />
+            <Meetups />
             <Community />
             <Contact />
         </div>
