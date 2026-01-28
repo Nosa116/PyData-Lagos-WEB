@@ -176,8 +176,8 @@
     cursor: pointer;
     transition: all var(--transition-base);
     white-space: nowrap;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     letter-spacing: 0.02em;
+    text-decoration: none;
 }
 
 .cta-button:hover {
