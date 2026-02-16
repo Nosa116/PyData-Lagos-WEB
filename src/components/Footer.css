@@ -157,7 +157,7 @@
 }
 
 .numfocus-logo {
-    width: 78px;
+    width: 120px;
     height: auto;
     opacity: 0.85;
     transition: opacity var(--transition-fast), transform var(--transition-fast);
