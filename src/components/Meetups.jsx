@@ -48,11 +48,6 @@ const normalizeMode = (event) => {
     return 'unknown'
 }
 
-const isPyDataLagosEvent = (event) => {
-    const url = String(event?.event_url || event?.url || event?.eventUrl || event?.link || '').toLowerCase()
-    return url.includes('meetup.com/pydata-lagos/')
-}
-
 const normalizeEvents = (events) => {
     if (!Array.isArray(events)) return []
 
@@ -79,7 +74,7 @@ const normalizeEvents = (events) => {
                 link: event?.url || event?.event_url || event?.link || MEETUP_GROUP_URL
             }
         })
-        .filter((event) => event.dateISO && isPyDataLagosEvent(event))
+        .filter((event) => event.dateISO)
 }
 
 const formatDateParts = (dateISO) => {
@@ -163,7 +158,7 @@ const Meetups = () => {
                 } else {
                     setEvents(FALLBACK_EVENTS)
                     setShowingPastFallback(false)
-                    setError('No PyData Lagos events found from current scraper output. Showing sample events.')
+                    setError('No events found from current scraper output. Showing sample events.')
                 }
             } catch (fetchError) {
                 if (!isMounted) return
