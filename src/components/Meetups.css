@@ -75,6 +75,18 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.meetup-empty {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.meetup-empty p {
+    font-family: var(--font-navbar);
+    color: var(--color-text-light);
+    font-weight: 600;
+}
+
 .meetup-row:hover {
     transform: translateY(-5px);
     border-color: var(--color-orange);

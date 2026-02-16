@@ -2,28 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import './Meetups.css'
 
 const PARSE_BASE_URL = 'https://api.parse.bot'
-const PARSE_SCRAPER_ID = import.meta.env.VITE_PARSE_SCRAPER_ID || 'c4738768-17e1-454a-be9c-c02ea79122db'
+const PARSE_SCRAPER_ID = import.meta.env.VITE_PARSE_SCRAPER_ID || '5a81d537-afb2-4a08-bb42-7f097e69f0d0'
 const MEETUP_GROUP_URL = 'https://www.meetup.com/pydata-lagos'
-const FALLBACK_EVENTS = [
-    {
-        id: 'fallback-1',
-        title: 'Intro to Pandas & NumPy',
-        mode: 'online',
-        dateISO: '2025-11-12T10:00:00+01:00'
-    },
-    {
-        id: 'fallback-2',
-        title: 'Machine Learning Deployment',
-        mode: 'physical',
-        dateISO: '2025-11-28T11:00:00+01:00'
-    },
-    {
-        id: 'fallback-3',
-        title: 'Open Source Contribution Sprint',
-        mode: 'hybrid',
-        dateISO: '2025-12-05T09:00:00+01:00'
-    }
-]
 
 const parseDateValue = (value) => {
     if (!value) return null
@@ -94,7 +74,7 @@ const modeLabel = (mode) => {
 }
 
 const Meetups = () => {
-    const [events, setEvents] = useState(FALLBACK_EVENTS)
+    const [events, setEvents] = useState([])
     const [loading, setLoading] = useState(true)
     const [showingPastFallback, setShowingPastFallback] = useState(false)
     const [error, setError] = useState('')
@@ -106,7 +86,7 @@ const Meetups = () => {
             const apiKey = import.meta.env.VITE_PARSE_API_KEY
 
             if (!apiKey) {
-                setError('Parse API key is not configured. Showing sample events.')
+                setError('Parse API key is not configured.')
                 setLoading(false)
                 return
             }
@@ -156,14 +136,14 @@ const Meetups = () => {
                     setEvents(recentPast)
                     setShowingPastFallback(true)
                 } else {
-                    setEvents(FALLBACK_EVENTS)
+                    setEvents([])
                     setShowingPastFallback(false)
-                    setError('No events found from current scraper output. Showing sample events.')
+                    setError('No events found from current scraper output.')
                 }
             } catch (fetchError) {
                 if (!isMounted) return
                 setError(fetchError instanceof Error ? fetchError.message : 'Unable to load Meetup events.')
-                setEvents(FALLBACK_EVENTS)
+                setEvents([])
             } finally {
                 if (isMounted) setLoading(false)
             }
@@ -210,6 +190,11 @@ const Meetups = () => {
                 </div>
 
                 <div className="meetups-list">
+                    {!loading && eventsForView.length === 0 && (
+                        <div className="meetup-row meetup-empty fade-in-up">
+                            <p>No live events available right now. Check the Meetup page for updates.</p>
+                        </div>
+                    )}
                     {eventsForView.map((event, index) => (
                         <div key={event.id} className="meetup-row fade-in-up" style={{ animationDelay: `${0.1 * (index + 1)}s` }}>
                             {/* Date Side */}
