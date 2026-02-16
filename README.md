@@ -28,23 +28,33 @@ npm install
 ```bash
 cp .env.example .env
 ```
-Set `VITE_PARSE_API_KEY` in `.env` using your key from `https://parse.bot/settings`.
-Optionally set `VITE_PARSE_SCRAPER_ID` if you want to target a different Parse scraper.
-Set `VITE_ENABLE_LIVE_EVENTS=true` only when you want live API fetching.
-Set `VITE_EVENTS_CACHE_HOURS` to control how often the app re-fetches live data (default 168 hours / 7 days).
+Set `PARSE_API_KEY` in `.env` using your key from `https://parse.bot/settings`.
+Optionally set `PARSE_SCRAPER_ID` if you want to target a different Parse scraper.
 
-3. Start the development server:
+3. Refresh the shared events cache file:
+```bash
+npm run events:refresh
+```
+
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
-4. Open your browser and visit `http://localhost:5173`
+5. Open your browser and visit `http://localhost:5173`
 
 ### Build for Production
 
 ```bash
 npm run build
 ```
+
+### Shared Event Caching (API Quota Safe)
+
+- Frontend reads only `public/events-cache.json` (no Parse calls from browsers).
+- Run `npm run events:refresh` when you want to update events manually.
+- GitHub Action `.github/workflows/refresh-events-cache.yml` refreshes weekly.
+- Add repository secret `PARSE_API_KEY` for the GitHub Action.
 
 ## Project Structure
 

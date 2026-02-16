@@ -1,66 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import './Meetups.css'
 
-const PARSE_BASE_URL = 'https://api.parse.bot'
-const PARSE_SCRAPER_ID = import.meta.env.VITE_PARSE_SCRAPER_ID || '5a81d537-afb2-4a08-bb42-7f097e69f0d0'
 const MEETUP_GROUP_URL = 'https://www.meetup.com/pydata-lagos'
-const LIVE_EVENTS_ENABLED = import.meta.env.VITE_ENABLE_LIVE_EVENTS === 'true'
-const CACHE_HOURS = Number(import.meta.env.VITE_EVENTS_CACHE_HOURS || 168)
-const CACHE_TTL_MS = Math.max(1, CACHE_HOURS) * 60 * 60 * 1000
-const EVENTS_CACHE_KEY = 'pydata_lagos_events_cache_v1'
-const EVENTS_CACHE_TIME_KEY = 'pydata_lagos_events_cache_time_v1'
-
-const parseDateValue = (value) => {
-    if (!value) return null
-    const date = new Date(value)
-    return Number.isNaN(date.getTime()) ? null : date
-}
-
-const normalizeMode = (event) => {
-    const raw = String(
-        event?.mode ||
-            event?.event_type ||
-            event?.event_mode ||
-            event?.format ||
-            event?.eventType ||
-            event?.venue_type ||
-            ''
-    ).toLowerCase()
-
-    if (raw.includes('hybrid')) return 'hybrid'
-    if (raw.includes('online') || raw.includes('virtual')) return 'online'
-    if (raw.includes('physical') || raw.includes('in-person') || raw.includes('offline')) return 'physical'
-    return 'unknown'
-}
-
-const normalizeEvents = (events) => {
-    if (!Array.isArray(events)) return []
-
-    return events
-        .map((event, index) => {
-            const date = parseDateValue(
-                event?.date_time ||
-                    event?.date ||
-                    event?.datetime ||
-                    event?.time ||
-                    event?.start_time ||
-                    event?.start_date
-            )
-
-            const title =
-                event?.title || event?.name || event?.event_title || event?.event_name || `Meetup Event ${index + 1}`
-
-            return {
-                id: String(event?.id || event?.event_id || event?.uuid || `event-${index}`),
-                title,
-                mode: normalizeMode(event),
-                details: event?.details || event?.description || '',
-                dateISO: date ? date.toISOString() : null,
-                link: event?.url || event?.event_url || event?.link || MEETUP_GROUP_URL
-            }
-        })
-        .filter((event) => event.dateISO)
-}
 
 const formatDateParts = (dateISO) => {
     const date = new Date(dateISO)
@@ -75,39 +16,36 @@ const modeLabel = (mode) => {
     if (mode === 'online') return 'Online'
     if (mode === 'physical') return 'Physical'
     if (mode === 'hybrid') return 'Hybrid'
+    if (mode === 'past') return 'Past Event'
     return 'Community'
 }
 
-const readCachedEvents = () => {
-    try {
-        const raw = window.localStorage.getItem(EVENTS_CACHE_KEY)
-        const ts = window.localStorage.getItem(EVENTS_CACHE_TIME_KEY)
-        if (!raw || !ts) return null
-
-        const parsed = JSON.parse(raw)
-        const cachedAt = Number(ts)
-        if (!Array.isArray(parsed) || Number.isNaN(cachedAt)) return null
-
-        const age = Date.now() - cachedAt
-        const fresh = age <= CACHE_TTL_MS
-
-        return {
-            events: parsed,
-            cachedAt,
-            fresh
-        }
-    } catch {
-        return null
-    }
+const toMode = (eventType, isOnline) => {
+    const raw = String(eventType || '').toLowerCase()
+    if (raw.includes('hybrid')) return 'hybrid'
+    if (isOnline === true || raw.includes('online') || raw.includes('virtual')) return 'online'
+    if (isOnline === false || raw.includes('physical') || raw.includes('in-person')) return 'physical'
+    return 'unknown'
 }
 
-const writeCachedEvents = (events) => {
-    try {
-        window.localStorage.setItem(EVENTS_CACHE_KEY, JSON.stringify(events))
-        window.localStorage.setItem(EVENTS_CACHE_TIME_KEY, String(Date.now()))
-    } catch {
-        // Intentionally ignore cache write failures.
-    }
+const normalizeFromCache = (events) => {
+    if (!Array.isArray(events)) return []
+
+    return events
+        .map((event, index) => {
+            const date = new Date(event?.date_time)
+            if (Number.isNaN(date.getTime())) return null
+
+            return {
+                id: String(event?.id || `event-${index}`),
+                title: event?.title || `Meetup Event ${index + 1}`,
+                mode: toMode(event?.event_type, event?.is_online),
+                details: event?.description || '',
+                dateISO: date.toISOString(),
+                link: event?.event_url || MEETUP_GROUP_URL
+            }
+        })
+        .filter(Boolean)
 }
 
 const Meetups = () => {
@@ -115,65 +53,18 @@ const Meetups = () => {
     const [loading, setLoading] = useState(true)
     const [showingPastFallback, setShowingPastFallback] = useState(false)
     const [error, setError] = useState('')
-    const [cacheMessage, setCacheMessage] = useState('')
+    const [lastUpdated, setLastUpdated] = useState('')
 
     useEffect(() => {
         let isMounted = true
 
-        const fetchEvents = async () => {
-            const cached = readCachedEvents()
-
-            if (cached?.events?.length) {
-                setEvents(cached.events)
-                setShowingPastFallback(cached.events.every((event) => event.mode === 'past'))
-                setCacheMessage(
-                    cached.fresh
-                        ? `Using cached events to save API calls (refreshes every ${CACHE_HOURS}h).`
-                        : 'Cached events are stale. Refreshing from live source...'
-                )
-                if (cached.fresh) {
-                    setLoading(false)
-                    return
-                }
-            }
-
-            if (!LIVE_EVENTS_ENABLED) {
-                setError('Live event sync is disabled to conserve API calls.')
-                setLoading(false)
-                return
-            }
-
-            const apiKey = import.meta.env.VITE_PARSE_API_KEY
-
-            if (!apiKey) {
-                setError('Parse API key is not configured.')
-                setLoading(false)
-                return
-            }
-
+        const loadCachedFile = async () => {
             try {
-                const response = await fetch(
-                    `${PARSE_BASE_URL}/scraper/${PARSE_SCRAPER_ID}/get_all_events`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-API-Key': apiKey
-                        },
-                        body: JSON.stringify({
-                            limit: 20,
-                            offset: 0
-                        })
-                    }
-                )
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch events (${response.status})`)
-                }
+                const response = await fetch('/events-cache.json', { cache: 'no-store' })
+                if (!response.ok) throw new Error(`Unable to load events cache (${response.status})`)
 
                 const data = await response.json()
-                const apiEvents = data?.data?.events || data?.events || []
-                const normalized = normalizeEvents(apiEvents)
+                const normalized = normalizeFromCache(data?.events || [])
                 const now = Date.now()
 
                 const upcoming = normalized
@@ -192,26 +83,33 @@ const Meetups = () => {
                 if (upcoming.length > 0) {
                     setEvents(upcoming)
                     setShowingPastFallback(false)
-                    writeCachedEvents(upcoming)
                 } else if (recentPast.length > 0) {
                     setEvents(recentPast)
                     setShowingPastFallback(true)
-                    writeCachedEvents(recentPast)
                 } else {
                     setEvents([])
-                    setShowingPastFallback(false)
-                    setError('No events found from current scraper output.')
+                    setError('No events available in shared cache yet.')
                 }
-            } catch (fetchError) {
+
+                if (data?.generated_at) {
+                    setLastUpdated(
+                        new Intl.DateTimeFormat('en-US', {
+                            month: 'short',
+                            day: '2-digit',
+                            year: 'numeric'
+                        }).format(new Date(data.generated_at))
+                    )
+                }
+            } catch (err) {
                 if (!isMounted) return
-                setError(fetchError instanceof Error ? fetchError.message : 'Unable to load Meetup events.')
+                setError(err instanceof Error ? err.message : 'Unable to load events.')
                 setEvents([])
             } finally {
                 if (isMounted) setLoading(false)
             }
         }
 
-        fetchEvents()
+        loadCachedFile()
 
         return () => {
             isMounted = false
@@ -239,14 +137,14 @@ const Meetups = () => {
                         Join the PyData Lagos community for insightful meetups, workshops, 
                         and networking events centered around data science.
                     </p>
-                    {cacheMessage && !error && (
+                    {lastUpdated && !error && (
                         <p className="meetups-note fade-in-up">
-                            {cacheMessage}
+                            Event feed last refreshed: {lastUpdated}
                         </p>
                     )}
                     {showingPastFallback && (
                         <p className="meetups-note fade-in-up">
-                            Upcoming events are currently unavailable from the scraper feed. Showing recent past events.
+                            Upcoming events are currently unavailable. Showing recent past events.
                         </p>
                     )}
                     {!showingPastFallback && error && (

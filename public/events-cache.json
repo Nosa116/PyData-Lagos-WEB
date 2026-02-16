@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-02-16T10:53:52.588Z",
+  "scraper_id": "5a81d537-afb2-4a08-bb42-7f097e69f0d0",
+  "count": 1,
+  "events": [
+    {
+      "id": "313269093",
+      "title": "AI Today: Navigating the Cultural and Technical Landscape",
+      "event_url": "https://www.meetup.com/pydata-lagos/events/313269093/",
+      "date_time": "2026-02-28T16:00:00+01:00",
+      "end_time": "2026-02-28T18:00:00+01:00",
+      "description": "Al is already changing how we work, learn, create, and interact online and many of those changes are happening faster than we can fully understand them. This meetup is a chance to slow down and have an honest, practical conversation about what's really going on.\n\nYou'll hear directly from people building Al systems, thinking through the ethical trade-offs, and seeing the social impact firsthand in different regions and communities. It's a shared discussion about what's working, what's broken, and what we should be more careful about.\n\nIf you're curious about Al beyond the hype, want real perspectives and value thoughtful community-driven conversations, this space is for you.",
+      "event_type": "ONLINE",
+      "is_online": true
+    }
+  ]
+}
