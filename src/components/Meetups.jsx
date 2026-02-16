@@ -4,6 +4,11 @@ import './Meetups.css'
 const PARSE_BASE_URL = 'https://api.parse.bot'
 const PARSE_SCRAPER_ID = import.meta.env.VITE_PARSE_SCRAPER_ID || '5a81d537-afb2-4a08-bb42-7f097e69f0d0'
 const MEETUP_GROUP_URL = 'https://www.meetup.com/pydata-lagos'
+const LIVE_EVENTS_ENABLED = import.meta.env.VITE_ENABLE_LIVE_EVENTS === 'true'
+const CACHE_HOURS = Number(import.meta.env.VITE_EVENTS_CACHE_HOURS || 168)
+const CACHE_TTL_MS = Math.max(1, CACHE_HOURS) * 60 * 60 * 1000
+const EVENTS_CACHE_KEY = 'pydata_lagos_events_cache_v1'
+const EVENTS_CACHE_TIME_KEY = 'pydata_lagos_events_cache_time_v1'
 
 const parseDateValue = (value) => {
     if (!value) return null
@@ -73,16 +78,71 @@ const modeLabel = (mode) => {
     return 'Community'
 }
 
+const readCachedEvents = () => {
+    try {
+        const raw = window.localStorage.getItem(EVENTS_CACHE_KEY)
+        const ts = window.localStorage.getItem(EVENTS_CACHE_TIME_KEY)
+        if (!raw || !ts) return null
+
+        const parsed = JSON.parse(raw)
+        const cachedAt = Number(ts)
+        if (!Array.isArray(parsed) || Number.isNaN(cachedAt)) return null
+
+        const age = Date.now() - cachedAt
+        const fresh = age <= CACHE_TTL_MS
+
+        return {
+            events: parsed,
+            cachedAt,
+            fresh
+        }
+    } catch {
+        return null
+    }
+}
+
+const writeCachedEvents = (events) => {
+    try {
+        window.localStorage.setItem(EVENTS_CACHE_KEY, JSON.stringify(events))
+        window.localStorage.setItem(EVENTS_CACHE_TIME_KEY, String(Date.now()))
+    } catch {
+        // Intentionally ignore cache write failures.
+    }
+}
+
 const Meetups = () => {
     const [events, setEvents] = useState([])
     const [loading, setLoading] = useState(true)
     const [showingPastFallback, setShowingPastFallback] = useState(false)
     const [error, setError] = useState('')
+    const [cacheMessage, setCacheMessage] = useState('')
 
     useEffect(() => {
         let isMounted = true
 
         const fetchEvents = async () => {
+            const cached = readCachedEvents()
+
+            if (cached?.events?.length) {
+                setEvents(cached.events)
+                setShowingPastFallback(cached.events.every((event) => event.mode === 'past'))
+                setCacheMessage(
+                    cached.fresh
+                        ? `Using cached events to save API calls (refreshes every ${CACHE_HOURS}h).`
+                        : 'Cached events are stale. Refreshing from live source...'
+                )
+                if (cached.fresh) {
+                    setLoading(false)
+                    return
+                }
+            }
+
+            if (!LIVE_EVENTS_ENABLED) {
+                setError('Live event sync is disabled to conserve API calls.')
+                setLoading(false)
+                return
+            }
+
             const apiKey = import.meta.env.VITE_PARSE_API_KEY
 
             if (!apiKey) {
@@ -132,9 +192,11 @@ const Meetups = () => {
                 if (upcoming.length > 0) {
                     setEvents(upcoming)
                     setShowingPastFallback(false)
+                    writeCachedEvents(upcoming)
                 } else if (recentPast.length > 0) {
                     setEvents(recentPast)
                     setShowingPastFallback(true)
+                    writeCachedEvents(recentPast)
                 } else {
                     setEvents([])
                     setShowingPastFallback(false)
@@ -177,6 +239,11 @@ const Meetups = () => {
                         Join the PyData Lagos community for insightful meetups, workshops, 
                         and networking events centered around data science.
                     </p>
+                    {cacheMessage && !error && (
+                        <p className="meetups-note fade-in-up">
+                            {cacheMessage}
+                        </p>
+                    )}
                     {showingPastFallback && (
                         <p className="meetups-note fade-in-up">
                             Upcoming events are currently unavailable from the scraper feed. Showing recent past events.

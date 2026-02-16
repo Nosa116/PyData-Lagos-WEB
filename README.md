@@ -30,6 +30,8 @@ cp .env.example .env
 ```
 Set `VITE_PARSE_API_KEY` in `.env` using your key from `https://parse.bot/settings`.
 Optionally set `VITE_PARSE_SCRAPER_ID` if you want to target a different Parse scraper.
+Set `VITE_ENABLE_LIVE_EVENTS=true` only when you want live API fetching.
+Set `VITE_EVENTS_CACHE_HOURS` to control how often the app re-fetches live data (default 168 hours / 7 days).
 
 3. Start the development server:
 ```bash
