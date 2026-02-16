@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import './Meetups.css'
 
 const PARSE_BASE_URL = 'https://api.parse.bot'
-const PARSE_SCRAPER_ID = 'c4738768-17e1-454a-be9c-c02ea79122db'
+const PARSE_SCRAPER_ID = import.meta.env.VITE_PARSE_SCRAPER_ID || 'c4738768-17e1-454a-be9c-c02ea79122db'
 const MEETUP_GROUP_URL = 'https://www.meetup.com/pydata-lagos'
 const FALLBACK_EVENTS = [
     {
@@ -34,6 +34,7 @@ const parseDateValue = (value) => {
 const normalizeMode = (event) => {
     const raw = String(
         event?.mode ||
+            event?.event_type ||
             event?.event_mode ||
             event?.format ||
             event?.eventType ||
@@ -47,13 +48,23 @@ const normalizeMode = (event) => {
     return 'unknown'
 }
 
+const isPyDataLagosEvent = (event) => {
+    const url = String(event?.event_url || event?.url || event?.eventUrl || event?.link || '').toLowerCase()
+    return url.includes('meetup.com/pydata-lagos/')
+}
+
 const normalizeEvents = (events) => {
     if (!Array.isArray(events)) return []
 
     return events
         .map((event, index) => {
             const date = parseDateValue(
-                event?.date || event?.datetime || event?.time || event?.start_time || event?.start_date
+                event?.date_time ||
+                    event?.date ||
+                    event?.datetime ||
+                    event?.time ||
+                    event?.start_time ||
+                    event?.start_date
             )
 
             const title =
@@ -68,7 +79,7 @@ const normalizeEvents = (events) => {
                 link: event?.url || event?.event_url || event?.link || MEETUP_GROUP_URL
             }
         })
-        .filter((event) => event.dateISO)
+        .filter((event) => event.dateISO && isPyDataLagosEvent(event))
 }
 
 const formatDateParts = (dateISO) => {
@@ -126,7 +137,8 @@ const Meetups = () => {
                 }
 
                 const data = await response.json()
-                const normalized = normalizeEvents(data?.events)
+                const apiEvents = data?.data?.events || data?.events || []
+                const normalized = normalizeEvents(apiEvents)
                 const now = Date.now()
 
                 const upcoming = normalized
@@ -151,6 +163,7 @@ const Meetups = () => {
                 } else {
                     setEvents(FALLBACK_EVENTS)
                     setShowingPastFallback(false)
+                    setError('No PyData Lagos events found from current scraper output. Showing sample events.')
                 }
             } catch (fetchError) {
                 if (!isMounted) return

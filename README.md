@@ -29,6 +29,7 @@ npm install
 cp .env.example .env
 ```
 Set `VITE_PARSE_API_KEY` in `.env` using your key from `https://parse.bot/settings`.
+Optionally set `VITE_PARSE_SCRAPER_ID` if you want to target a different Parse scraper.
 
 3. Start the development server:
 ```bash
