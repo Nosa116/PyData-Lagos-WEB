@@ -24,12 +24,18 @@ A creative, modern React website for PyData Lagos featuring stunning animations 
 npm install
 ```
 
-2. Start the development server:
+2. Configure environment:
+```bash
+cp .env.example .env
+```
+Set `VITE_PARSE_API_KEY` in `.env` using your key from `https://parse.bot/settings`.
+
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
-3. Open your browser and visit `http://localhost:5173`
+4. Open your browser and visit `http://localhost:5173`
 
 ### Build for Production
 
