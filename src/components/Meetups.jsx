@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import './Meetups.css'
 
 const MEETUP_GROUP_URL = 'https://www.meetup.com/pydata-lagos'
+const EVENTS_CACHE_URL = `${import.meta.env.BASE_URL}events-cache.json`
 
 const formatDateParts = (dateISO) => {
     const date = new Date(dateISO)
@@ -60,10 +61,16 @@ const Meetups = () => {
 
         const loadCachedFile = async () => {
             try {
-                const response = await fetch('/events-cache.json', { cache: 'no-store' })
+                const response = await fetch(EVENTS_CACHE_URL, { cache: 'no-store' })
                 if (!response.ok) throw new Error(`Unable to load events cache (${response.status})`)
 
-                const data = await response.json()
+                const raw = await response.text()
+                let data = null
+                try {
+                    data = JSON.parse(raw)
+                } catch {
+                    throw new Error('Events cache is not valid JSON. Please refresh public/events-cache.json.')
+                }
                 const normalized = normalizeFromCache(data?.events || [])
                 const now = Date.now()
 
