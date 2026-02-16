@@ -8,7 +8,7 @@ import Contributor from './components/Contributor'
 import Team from './components/Team'
 import Meetups from './components/Meetups'
 import Community from './components/Community'
-import Contact from './components/Contact'
+import Footer from './components/Footer'
 
 function App() {
     const [scrolled, setScrolled] = useState(false)
@@ -32,7 +32,7 @@ function App() {
             <Team />
             <Meetups />
             <Community />
-            <Contact />
+            <Footer />
         </div>
     )
 }
