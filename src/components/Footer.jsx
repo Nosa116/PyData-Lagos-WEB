@@ -46,6 +46,8 @@ const Footer = () => {
                             <a href="mailto:10gbenga.ezekiel@gmail.com">10gbenga.ezekiel@gmail.com</a>
                             <a href="https://www.linkedin.com/company/pydata-lagos" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                             <a href="https://github.com/pydata-lagos" target="_blank" rel="noopener noreferrer">GitHub</a>
+                            <a href="https://www.meetup.com/pydata-lagos" target="_blank" rel="noopener noreferrer">Meetup</a>
+                            <a href="https://chat.whatsapp.com/I6AyhQt2m6L5ZKhO8EDJxc" target="_blank" rel="noopener noreferrer">WhatsApp Community</a>
                             <a href="https://discord.gg/CjspHbE9xe" target="_blank" rel="noopener noreferrer">Discord</a>
                         </div>
                     </div>
