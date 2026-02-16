@@ -73,6 +73,7 @@
 }
 
 .speaking-description {
+    font-family: var(--font-navbar);
     font-size: 1.125rem;
     line-height: 1.6;
     color: var(--color-text-light);
