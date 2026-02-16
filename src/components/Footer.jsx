@@ -10,7 +10,20 @@ const Footer = () => {
             <div className="footer-container">
                 <div className="footer-top">
                     <div className="footer-brand">
-                        <img src="/PyData LagosNG.png" alt="PyData Lagos" className="footer-logo" />
+                        <div className="footer-brand-logos">
+                            <img src="/PyData LagosNG.png" alt="PyData Lagos" className="footer-logo" />
+                            <div className="powered-by">
+                                <span>Powered by</span>
+                                <a
+                                    href="https://numfocus.org/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label="NumFOCUS"
+                                >
+                                    <img src={numfocusLogo} alt="NumFOCUS" className="numfocus-logo" />
+                                </a>
+                            </div>
+                        </div>
                         <h2>PYDATA LAGOS</h2>
                         <p>
                             Building an open, practical, and globally connected data science community across Africa.
@@ -59,15 +72,6 @@ const Footer = () => {
                 <div className="footer-bottom">
                     <p>© {year} PyData Lagos. A NumFOCUS Community.</p>
                     <div className="footer-meta-links">
-                        <a
-                            href="https://numfocus.org/"
-                            className="numfocus-logo-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="NumFOCUS"
-                        >
-                            <img src={numfocusLogo} alt="NumFOCUS" className="numfocus-logo" />
-                        </a>
                         <a href="https://pydata.org/code-of-conduct/" target="_blank" rel="noopener noreferrer">Code of Conduct</a>
                         <a href="https://www.numfocus.org/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy</a>
                         <a href="https://www.meetup.com/terms/" target="_blank" rel="noopener noreferrer">Terms</a>
