@@ -1,4 +1,5 @@
 import './Footer.css'
+import numfocusLogo from '../../Images/numfocusweblogo_orig-1.png'
 
 const Footer = () => {
     const year = new Date().getFullYear()
@@ -58,6 +59,15 @@ const Footer = () => {
                 <div className="footer-bottom">
                     <p>© {year} PyData Lagos. A NumFOCUS Community.</p>
                     <div className="footer-meta-links">
+                        <a
+                            href="https://numfocus.org/"
+                            className="numfocus-logo-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="NumFOCUS"
+                        >
+                            <img src={numfocusLogo} alt="NumFOCUS" className="numfocus-logo" />
+                        </a>
                         <a href="https://pydata.org/code-of-conduct/" target="_blank" rel="noopener noreferrer">Code of Conduct</a>
                         <a href="https://www.numfocus.org/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy</a>
                         <a href="https://www.meetup.com/terms/" target="_blank" rel="noopener noreferrer">Terms</a>

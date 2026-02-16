@@ -135,6 +135,25 @@
     gap: 1.25rem;
 }
 
+.numfocus-logo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0.25rem;
+}
+
+.numfocus-logo {
+    width: 78px;
+    height: auto;
+    opacity: 0.85;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.numfocus-logo-link:hover .numfocus-logo {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
 .footer-meta-links a {
     color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
