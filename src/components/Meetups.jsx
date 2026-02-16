@@ -21,6 +21,23 @@ const modeLabel = (mode) => {
     return 'Community'
 }
 
+const toGoogleCalendarDate = (isoDate) => new Date(isoDate).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')
+
+const createCalendarUrl = (event) => {
+    const start = event.dateISO
+    const end = event.endISO || new Date(new Date(start).getTime() + 2 * 60 * 60 * 1000).toISOString()
+    const details = [event.details, event.link].filter(Boolean).join('\n\n')
+
+    const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: event.title,
+        dates: `${toGoogleCalendarDate(start)}/${toGoogleCalendarDate(end)}`,
+        details
+    })
+
+    return `https://calendar.google.com/calendar/render?${params.toString()}`
+}
+
 const toMode = (eventType, isOnline) => {
     const raw = String(eventType || '').toLowerCase()
     if (raw.includes('hybrid')) return 'hybrid'
@@ -43,6 +60,7 @@ const normalizeFromCache = (events) => {
                 mode: toMode(event?.event_type, event?.is_online),
                 details: event?.description || '',
                 dateISO: date.toISOString(),
+                endISO: event?.end_time ? new Date(event.end_time).toISOString() : null,
                 link: event?.event_url || MEETUP_GROUP_URL
             }
         })
@@ -207,9 +225,10 @@ const Meetups = () => {
                                     {event.mode === 'past' ? 'View Event' : 'Register Now'}
                                 </a>
                                 <a
-                                    href={MEETUP_GROUP_URL}
+                                    href={createCalendarUrl(event)}
                                     className="calendar-btn"
-                                    title="View Meetup Group"
+                                    title="Add to Calendar"
+                                    aria-label={`Add ${event.title} to Google Calendar`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
