@@ -12,7 +12,7 @@ const Community = () => {
             title: "PyData Lagos Website",
             status: "Done",
             statusClass: "completed",
-            description: "The official open-source website for the PyData Lagos community, built with React and Vite."
+            description: "The official open-source website for the PyData Lagos community."
         },
         {
             title: "Coming Soon",
