@@ -3,22 +3,22 @@ import './Community.css'
 const Community = () => {
     const projects = [
         {
-            title: "Lagos Traffic Visualizer",
-            status: "Completed",
-            statusClass: "completed",
-            description: "An interactive dashboard visualizing city traffic patterns to help commuters optimize travel times using historical data."
-        },
-        {
-            title: "Yoruba NLP Dataset",
+            title: "9JaSafety",
             status: "In Progress",
             statusClass: "in-progress",
-            description: "Collaboratively building a comprehensive text corpus for Yoruba language processing to improve machine translation models."
+            description: "Free and open source safety application for Nigerians - kidnappings, dangerous roads, and crime alerts"
         },
         {
-            title: "Intro to Python Curriculum",
+            title: "PyData Lagos Website",
+            status: "Done",
+            statusClass: "completed",
+            description: "The official open-source website for the PyData Lagos community, built with React and Vite."
+        },
+        {
+            title: "Coming Soon",
             status: "Planning",
             statusClass: "planning",
-            description: "Designing a localized, project-based curriculum for high school students across Lagos to learn Python fundamentals."
+            description: ""
         }
     ]
 

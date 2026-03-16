@@ -138,34 +138,30 @@
 .footer-socials {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    gap: 1.25rem;
+    margin-top: 0.75rem;
 }
 
 .social-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    width: 36px;
+    height: 36px;
+    color: rgba(255, 255, 255, 0.65) !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
 
 .social-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .social-icon:hover {
-    background: var(--color-accent);
-    color: #fff !important;
-    border-color: var(--color-accent);
-    transform: translateY(-4px) scale(1.05) !important;
-    box-shadow: 0 10px 20px -10px rgba(4, 173, 206, 0.6);
+    color: var(--color-accent) !important;
+    transform: translateY(-5px) scale(1.15) !important;
+    filter: drop-shadow(0 10px 15px rgba(4, 173, 206, 0.4));
 }
 
 .footer-divider {
