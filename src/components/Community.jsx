@@ -49,7 +49,7 @@ const Community = () => {
                         </div>
                         
                         <div className="community-discord fade-in-up">
-                            <p>Want to contribute? <a href="#">Join our Discord</a></p>
+                            <p>Want to contribute? <a href="https://chat.whatsapp.com/I6AyhQt2m6L5ZKhO8EDJxc" target="_blank" rel="noopener noreferrer">Join our WhatsApp Community</a></p>
                         </div>
                     </div>
 
