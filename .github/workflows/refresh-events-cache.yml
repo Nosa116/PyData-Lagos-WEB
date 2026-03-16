@@ -18,15 +18,17 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Refresh cache file
+        if: ${{ secrets.PARSE_API_KEY != '' }}
         env:
           PARSE_API_KEY: ${{ secrets.PARSE_API_KEY }}
           PARSE_SCRAPER_ID: 5a81d537-afb2-4a08-bb42-7f097e69f0d0
         run: node scripts/refresh-events-cache.mjs
 
       - name: Commit and push changes
+        if: ${{ secrets.PARSE_API_KEY != '' }}
         run: |
           if git diff --quiet; then
             echo "No updates to commit."

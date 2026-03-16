@@ -24,7 +24,11 @@ const response = await fetch(url, {
 })
 
 if (!response.ok) {
+    const body = await response.text().catch(() => '')
     console.error(`Parse request failed: HTTP ${response.status}`)
+    if (body) {
+        console.error(`Parse response: ${body.slice(0, 2000)}`)
+    }
     process.exit(1)
 }
 
