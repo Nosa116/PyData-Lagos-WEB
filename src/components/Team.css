@@ -255,15 +255,30 @@
 
 @media (max-width: 640px) {
     .team-header {
-        margin-bottom: 4rem;
+        margin-bottom: 2.5rem;
     }
-    
-    .team-grid {
-        gap: 3rem 1.5rem;
+
+    /* Collapse the blurred wrapper on mobile - avoids the endless scroll UX issue */
+    .team-blurred-wrapper > .team-grid,
+    .team-blurred-wrapper > .team-cta {
+        display: none;
     }
-    
-    .member-image-wrapper {
-        width: 180px;
-        height: 180px;
+
+    .team-blurred-wrapper {
+        min-height: 260px;
+        background: linear-gradient(135deg, rgba(4, 173, 206, 0.05), rgba(234, 142, 67, 0.05));
+        border-radius: 24px;
+        border: 1px solid rgba(4, 173, 206, 0.12);
+    }
+
+    .team-coming-soon-overlay {
+        position: relative;
+        inset: unset;
+        padding: 3rem 1.5rem;
+    }
+
+    .coming-soon-badge {
+        padding: 2rem 2rem;
+        border-radius: 20px;
     }
 }
