@@ -126,9 +126,46 @@
     transition: color var(--transition-fast), transform var(--transition-fast);
 }
 
-.footer-nav-group a:hover {
+.footer-nav-group a:hover:not(.social-icon) {
     color: var(--color-orange);
     transform: translateX(4px);
+}
+
+.email-link {
+    margin-bottom: 0.75rem;
+}
+
+.footer-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.social-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.social-icon:hover {
+    background: var(--color-accent);
+    color: #fff !important;
+    border-color: var(--color-accent);
+    transform: translateY(-4px) scale(1.05) !important;
+    box-shadow: 0 10px 20px -10px rgba(4, 173, 206, 0.6);
 }
 
 .footer-divider {

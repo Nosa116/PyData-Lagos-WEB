@@ -11,7 +11,7 @@ const Contact = () => {
                 <div className="contact-content fade-in-up" style={{ animationDelay: '0.2s' }}>
                     <div className="contact-info">
                         <p>Local Organizer: Olugbenga Ezekiel</p>
-                        <a href="mailto:10gbenga.ezekiel@gmail.com">10gbenga.ezekiel@gmail.com</a>
+                        <a href="mailto:lagospydata@gmail.com">lagospydata@gmail.com</a>
                     </div>
                     <div className="contact-footer">
                         <a href="https://pydata.org/code-of-conduct/" target="_blank" rel="noopener noreferrer">Code of Conduct</a>
