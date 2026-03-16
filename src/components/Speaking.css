@@ -54,7 +54,7 @@
     font-weight: 700;
     font-size: 0.875rem;
     letter-spacing: 0.1em;
-    color: var(--color-primary);
+    color: var(--color-accent);
     text-transform: uppercase;
 }
 
@@ -141,7 +141,7 @@
 .stat-value {
     font-family: var(--font-display);
     font-size: 2.5rem;
-    color: var(--color-primary);
+    color: var(--color-accent);
     line-height: 1;
 }
 
@@ -194,7 +194,7 @@
 
 .topic-card:hover {
     transform: translateY(-5px);
-    border-color: var(--color-primary-light);
+    border-color: var(--color-accent);
     box-shadow: 0 20px 40px -20px rgba(99, 102, 241, 0.15);
 }
 
@@ -202,7 +202,7 @@
     width: 48px;
     height: 48px;
     background-color: rgba(99, 102, 241, 0.05);
-    color: var(--color-primary);
+    color: var(--color-accent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -212,7 +212,7 @@
 }
 
 .topic-card:hover .topic-icon-box {
-    background-color: var(--color-primary);
+    background-color: var(--color-accent);
     color: white;
     transform: rotate(-5deg) scale(1.1);
 }
