@@ -77,7 +77,86 @@ const Meetups = () => {
     useEffect(() => {
         let isMounted = true
 
-        const loadCachedFile = async () => {
+        const parseApiKey = import.meta.env.VITE_PARSE_API_KEY
+        const scraperId = import.meta.env.VITE_PARSE_SCRAPER_ID || '5a81d537-afb2-4a08-bb42-7f097e69f0d0'
+        const parseUrl = `https://api.parse.bot/scraper/${scraperId}/get_all_events`
+
+        const processEventsData = (eventsArray, timestamp, isLive) => {
+            const normalized = normalizeFromCache(eventsArray)
+            // Use local date string comparison to avoid strict timezone dropoffs
+            // Just comparing start of today works better for events happening "today"
+            const todayStr = new Date().toISOString().split('T')[0]
+
+            const upcoming = normalized
+                .filter((event) => {
+                    const eventDateStr = new Date(event.dateISO).toISOString().split('T')[0]
+                    return eventDateStr >= todayStr
+                })
+                .sort((a, b) => new Date(a.dateISO).getTime() - new Date(b.dateISO).getTime())
+                .slice(0, 3)
+
+            const now = Date.now()
+            const recentPast = normalized
+                .filter((event) => new Date(event.dateISO).getTime() < now && !upcoming.some(u => u.id === event.id))
+                .sort((a, b) => new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime())
+                .slice(0, 3)
+                .map((event) => ({ ...event, mode: 'past' }))
+
+            if (!isMounted) return
+
+            if (upcoming.length > 0) {
+                setEvents(upcoming)
+                setShowingPastFallback(false)
+            } else if (recentPast.length > 0) {
+                setEvents(recentPast)
+                setShowingPastFallback(true)
+            } else {
+                setEvents([])
+                setError('No events available yet.')
+            }
+
+            if (timestamp) {
+                const formattedTime = new Intl.DateTimeFormat('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit'
+                }).format(new Date(timestamp))
+                
+                setLastUpdated(`${isLive ? 'Live' : 'Cached feed'} (${formattedTime})`)
+            }
+        }
+
+        const fetchLiveEvents = async () => {
+            if (!parseApiKey) return false
+            try {
+                const response = await fetch(parseUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': parseApiKey
+                    },
+                    body: JSON.stringify({ limit: 50, offset: 0 })
+                })
+
+                if (!response.ok) return false
+                
+                const payload = await response.json()
+                const eventsArray = payload?.data?.events || payload?.events || []
+                
+                if (eventsArray.length > 0) {
+                    processEventsData(eventsArray, Date.now(), true)
+                    return true
+                }
+                return false
+            } catch (err) {
+                console.warn('Live fetch failed, falling back to cache:', err)
+                return false
+            }
+        }
+
+        const fetchCachedEvents = async () => {
             try {
                 const response = await fetch(EVENTS_CACHE_URL, { cache: 'no-store' })
                 if (!response.ok) throw new Error(`Unable to load events cache (${response.status})`)
@@ -87,54 +166,30 @@ const Meetups = () => {
                 try {
                     data = JSON.parse(raw)
                 } catch {
-                    throw new Error('Events cache is not valid JSON. Please refresh public/events-cache.json.')
+                    throw new Error('Events cache is not valid JSON.')
                 }
-                const normalized = normalizeFromCache(data?.events || [])
-                const now = Date.now()
-
-                const upcoming = normalized
-                    .filter((event) => new Date(event.dateISO).getTime() >= now)
-                    .sort((a, b) => new Date(a.dateISO).getTime() - new Date(b.dateISO).getTime())
-                    .slice(0, 3)
-
-                const recentPast = normalized
-                    .filter((event) => new Date(event.dateISO).getTime() < now)
-                    .sort((a, b) => new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime())
-                    .slice(0, 3)
-                    .map((event) => ({ ...event, mode: 'past' }))
-
-                if (!isMounted) return
-
-                if (upcoming.length > 0) {
-                    setEvents(upcoming)
-                    setShowingPastFallback(false)
-                } else if (recentPast.length > 0) {
-                    setEvents(recentPast)
-                    setShowingPastFallback(true)
-                } else {
-                    setEvents([])
-                    setError('No events available in shared cache yet.')
-                }
-
-                if (data?.generated_at) {
-                    setLastUpdated(
-                        new Intl.DateTimeFormat('en-US', {
-                            month: 'short',
-                            day: '2-digit',
-                            year: 'numeric'
-                        }).format(new Date(data.generated_at))
-                    )
-                }
+                
+                processEventsData(data?.events || [], data?.generated_at, false)
             } catch (err) {
                 if (!isMounted) return
                 setError(err instanceof Error ? err.message : 'Unable to load events.')
                 setEvents([])
-            } finally {
-                if (isMounted) setLoading(false)
             }
         }
 
-        loadCachedFile()
+        const loadEvents = async () => {
+            setLoading(true)
+            setError('')
+            
+            const liveSuccess = await fetchLiveEvents()
+            if (!liveSuccess && isMounted) {
+                await fetchCachedEvents()
+            }
+            
+            if (isMounted) setLoading(false)
+        }
+
+        loadEvents()
 
         return () => {
             isMounted = false
