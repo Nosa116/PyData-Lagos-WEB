@@ -14,21 +14,63 @@ if (!PARSE_API_KEY) {
 
 const url = `https://api.parse.bot/scraper/${PARSE_SCRAPER_ID}/get_all_events`
 
-const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': PARSE_API_KEY
-    },
-    body: JSON.stringify({ limit: LIMIT, offset: 0 })
-})
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-if (!response.ok) {
-    const body = await response.text().catch(() => '')
-    console.error(`Parse request failed: HTTP ${response.status}`)
-    if (body) {
-        console.error(`Parse response: ${body.slice(0, 2000)}`)
+const fetchWithRetries = async (attempts = 3) => {
+    let lastError = null
+
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-API-Key': PARSE_API_KEY
+                },
+                body: JSON.stringify({ limit: LIMIT, offset: 0 })
+            })
+
+            if (response.ok) {
+                return response
+            }
+
+            const body = await response.text().catch(() => '')
+            console.error(`Parse request failed: HTTP ${response.status}`)
+            if (body) {
+                console.error(`Parse response: ${body.slice(0, 2000)}`)
+            }
+            lastError = new Error(`HTTP ${response.status}`)
+        } catch (error) {
+            lastError = error
+            console.error(`Parse request error: ${error?.message || error}`)
+        }
+
+        if (attempt < attempts) {
+            const delayMs = attempt === 1 ? 1000 : 3000
+            console.log(`Retrying Parse request in ${delayMs / 1000}s...`)
+            await wait(delayMs)
+        }
     }
+
+    throw lastError || new Error('Parse request failed after retries.')
+}
+
+let response
+
+try {
+    response = await fetchWithRetries(3)
+} catch (error) {
+    try {
+        const existing = await fs.readFile(OUTPUT_PATH, 'utf8')
+        const parsed = JSON.parse(existing)
+        if (Array.isArray(parsed?.events) && parsed.events.length > 0) {
+            console.warn('Parse API unavailable. Keeping existing events cache.')
+            process.exit(0)
+        }
+    } catch {
+        // fall through to hard failure below
+    }
+    console.error('Parse API unavailable and no valid cache exists.')
     process.exit(1)
 }
 
